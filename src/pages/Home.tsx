@@ -8,6 +8,7 @@ function Home() {
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState("first-asc");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("https://randomuser.me/api/?results=10&seed=adressbok")
@@ -23,8 +24,15 @@ function Home() {
       })
       .catch(() => {
         setError("Kunde inte hämta anställda. Försök igen senare.");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
+
+  if (loading) {
+    return <p>Laddar anställda...</p>;
+  }
 
   if (error) {
     return <p>{error}</p>;
