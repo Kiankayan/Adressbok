@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Search, Mail, Phone, ArrowUpDown } from "lucide-react";
 import type { Employee } from "../types/Employee";
 import "./Home.css";
 
@@ -65,41 +66,64 @@ function Home() {
       <h1 className="home-title">Adressbok</h1>
 
       <div className="controls">
-        <input
-          type="text"
-          placeholder="Sök efter anställd..."
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
+        <div className="search-box">
+          <Search size={20} />
 
-        <select
-          value={sortOrder}
-          onChange={(event) => setSortOrder(event.target.value)}
-        >
-          <option value="first-asc">Förnamn A–Ö</option>
-          <option value="first-desc">Förnamn Ö–A</option>
-          <option value="last-asc">Efternamn A–Ö</option>
-          <option value="last-desc">Efternamn Ö–A</option>
-        </select>
+          <input
+            type="text"
+            placeholder="Sök efter anställd..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        </div>
+
+        <div className="sort-box">
+          <ArrowUpDown size={20} />
+
+          <select
+            value={sortOrder}
+            onChange={(event) => setSortOrder(event.target.value)}
+          >
+            <option value="first-asc">Förnamn A–Ö</option>
+            <option value="first-desc">Förnamn Ö–A</option>
+            <option value="last-asc">Efternamn A–Ö</option>
+            <option value="last-desc">Efternamn Ö–A</option>
+          </select>
+        </div>
       </div>
 
       <div className="employee-list">
-        {sortedEmployees.map((employee) => (
-          <Link
-            to={`/employee/${employee.login.uuid}`}
-            key={employee.login.uuid}
-            className="employee-card"
-          >
-            <img src={employee.picture.large} alt={employee.name.first} />
+        {sortedEmployees.length === 0 ? (
+          <p className="no-results">
+            🔍 Inga anställda hittades.
+            <br />
+            Försök med ett annat namn.
+          </p>
+        ) : (
+          sortedEmployees.map((employee) => (
+            <Link
+              to={`/employee/${employee.login.uuid}`}
+              key={employee.login.uuid}
+              className="employee-card"
+            >
+              <img src={employee.picture.large} alt={employee.name.first} />
 
-            <h2>
-              {employee.name.first} {employee.name.last}
-            </h2>
+              <h2>
+                {employee.name.first} {employee.name.last}
+              </h2>
 
-            <p>{employee.email}</p>
-            <p>{employee.phone}</p>
-          </Link>
-        ))}
+              <p>
+                <Mail size={18} />
+                {employee.email}
+              </p>
+
+              <p>
+                <Phone size={18} />
+                {employee.phone}
+              </p>
+            </Link>
+          ))
+        )}
       </div>
     </div>
   );
