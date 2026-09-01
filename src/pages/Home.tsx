@@ -4,6 +4,7 @@ import type { Employee } from "../types/Employee";
 
 function Home() {
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetch("https://randomuser.me/api/?results=10&seed=adressbok")
@@ -11,11 +12,24 @@ function Home() {
       .then((data) => setEmployees(data.results));
   }, []);
 
+  const filteredEmployees = employees.filter(
+    (employee) =>
+      employee.name.first.toLowerCase().startsWith(search.toLowerCase()) ||
+      employee.name.last.toLowerCase().startsWith(search.toLowerCase()),
+  );
+
   return (
     <div>
       <h1>Alla anställda</h1>
 
-      {employees.map((employee) => (
+      <input
+        type="text"
+        placeholder="Sök efter anställd..."
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+      />
+
+      {filteredEmployees.map((employee) => (
         <Link to={`/employee/${employee.login.uuid}`} key={employee.login.uuid}>
           <div>
             <img src={employee.picture.large} alt={employee.name.first} />
