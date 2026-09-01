@@ -6,7 +6,7 @@ function Home() {
   const [employees, setEmployees] = useState<Employee[]>([]);
 
   useEffect(() => {
-    fetch("https://randomuser.me/api/?results=10")
+    fetch("https://randomuser.me/api/?results=10&seed=adressbok")
       .then((response) => response.json())
       .then((data) => setEmployees(data.results));
   }, []);
