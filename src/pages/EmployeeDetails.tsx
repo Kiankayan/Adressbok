@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import type { Employee } from "../types/Employee";
 
 function EmployeeDetails() {
@@ -24,6 +24,8 @@ function EmployeeDetails() {
 
   return (
     <div>
+      <Link to="/">← Tillbaka</Link>
+
       <img src={employee.picture.large} alt={employee.name.first} />
 
       <h1>
@@ -32,6 +34,9 @@ function EmployeeDetails() {
 
       <p>{employee.email}</p>
       <p>{employee.phone}</p>
+
+      <p>{employee.location.city}</p>
+      <p>{employee.location.country}</p>
     </div>
   );
 }

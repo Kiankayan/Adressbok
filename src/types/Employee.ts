@@ -8,6 +8,11 @@ export interface Employee {
   };
   email: string;
   phone: string;
+
+  location: {
+    city: string;
+    country: string;
+  };
   picture: {
     large: string;
   };
