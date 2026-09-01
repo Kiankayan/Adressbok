@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Employee } from "../types/Employee";
+import "./Home.css";
 
 function Home() {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -36,29 +37,35 @@ function Home() {
   });
 
   return (
-    <div>
-      <h1>Alla anställda</h1>
+    <div className="home">
+      <h1 className="home-title">Adressbok</h1>
 
-      <input
-        type="text"
-        placeholder="Sök efter anställd..."
-        value={search}
-        onChange={(event) => setSearch(event.target.value)}
-      />
+      <div className="controls">
+        <input
+          type="text"
+          placeholder="Sök efter anställd..."
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
 
-      <select
-        value={sortOrder}
-        onChange={(event) => setSortOrder(event.target.value)}
-      >
-        <option value="first-asc">Förnamn A–Ö</option>
-        <option value="first-desc">Förnamn Ö–A</option>
-        <option value="last-asc">Efternamn A–Ö</option>
-        <option value="last-desc">Efternamn Ö–A</option>
-      </select>
+        <select
+          value={sortOrder}
+          onChange={(event) => setSortOrder(event.target.value)}
+        >
+          <option value="first-asc">Förnamn A–Ö</option>
+          <option value="first-desc">Förnamn Ö–A</option>
+          <option value="last-asc">Efternamn A–Ö</option>
+          <option value="last-desc">Efternamn Ö–A</option>
+        </select>
+      </div>
 
-      {sortedEmployees.map((employee) => (
-        <Link to={`/employee/${employee.login.uuid}`} key={employee.login.uuid}>
-          <div>
+      <div className="employee-list">
+        {sortedEmployees.map((employee) => (
+          <Link
+            to={`/employee/${employee.login.uuid}`}
+            key={employee.login.uuid}
+            className="employee-card"
+          >
             <img src={employee.picture.large} alt={employee.name.first} />
 
             <h2>
@@ -67,9 +74,9 @@ function Home() {
 
             <p>{employee.email}</p>
             <p>{employee.phone}</p>
-          </div>
-        </Link>
-      ))}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
