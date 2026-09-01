@@ -1,4 +1,7 @@
 export interface Employee {
+  login: {
+    uuid: string;
+  };
   name: {
     first: string;
     last: string;

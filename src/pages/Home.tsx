@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import type { Employee } from "../types/Employee";
 
 function Home() {
@@ -15,14 +16,18 @@ function Home() {
       <h1>Alla anställda</h1>
 
       {employees.map((employee) => (
-        <div key={employee.email}>
-          <img src={employee.picture.large} alt={employee.name.first} />
-          <h2>
-            {employee.name.first} {employee.name.last}
-          </h2>
-          <p>{employee.email}</p>
-          <p>{employee.phone}</p>
-        </div>
+        <Link to={`/employee/${employee.login.uuid}`} key={employee.login.uuid}>
+          <div>
+            <img src={employee.picture.large} alt={employee.name.first} />
+
+            <h2>
+              {employee.name.first} {employee.name.last}
+            </h2>
+
+            <p>{employee.email}</p>
+            <p>{employee.phone}</p>
+          </div>
+        </Link>
       ))}
     </div>
   );

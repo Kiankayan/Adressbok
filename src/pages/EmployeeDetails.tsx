@@ -1,5 +1,14 @@
+import { useParams } from "react-router-dom";
+
 function EmployeeDetails() {
-  return <h1>Detaljer om anställda</h1>;
+  const { id } = useParams();
+
+  return (
+    <div>
+      <h1>Detaljer om anställd</h1>
+      <p>Employee ID: {id}</p>
+    </div>
+  );
 }
 
 export default EmployeeDetails;
