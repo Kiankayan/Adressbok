@@ -5,6 +5,7 @@ import type { Employee } from "../types/Employee";
 function Home() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("first-asc");
 
   useEffect(() => {
     fetch("https://randomuser.me/api/?results=10&seed=adressbok")
@@ -18,6 +19,22 @@ function Home() {
       employee.name.last.toLowerCase().startsWith(search.toLowerCase()),
   );
 
+  const sortedEmployees = [...filteredEmployees].sort((a, b) => {
+    if (sortOrder === "first-asc") {
+      return a.name.first.localeCompare(b.name.first);
+    }
+
+    if (sortOrder === "first-desc") {
+      return b.name.first.localeCompare(a.name.first);
+    }
+
+    if (sortOrder === "last-asc") {
+      return a.name.last.localeCompare(b.name.last);
+    }
+
+    return b.name.last.localeCompare(a.name.last);
+  });
+
   return (
     <div>
       <h1>Alla anställda</h1>
@@ -29,7 +46,17 @@ function Home() {
         onChange={(event) => setSearch(event.target.value)}
       />
 
-      {filteredEmployees.map((employee) => (
+      <select
+        value={sortOrder}
+        onChange={(event) => setSortOrder(event.target.value)}
+      >
+        <option value="first-asc">Förnamn A–Ö</option>
+        <option value="first-desc">Förnamn Ö–A</option>
+        <option value="last-asc">Efternamn A–Ö</option>
+        <option value="last-desc">Efternamn Ö–A</option>
+      </select>
+
+      {sortedEmployees.map((employee) => (
         <Link to={`/employee/${employee.login.uuid}`} key={employee.login.uuid}>
           <div>
             <img src={employee.picture.large} alt={employee.name.first} />
