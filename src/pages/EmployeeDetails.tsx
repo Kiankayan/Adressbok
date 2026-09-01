@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { Employee } from "../types/Employee";
+import "./EmployeeDetails.css";
 
 function EmployeeDetails() {
   const { id } = useParams();
@@ -23,20 +24,33 @@ function EmployeeDetails() {
   }
 
   return (
-    <div>
-      <Link to="/">← Tillbaka</Link>
+    <div className="employee-page">
+      <div className="employee-container">
+        <Link to="/" className="back-link">
+          ← Tillbaka
+        </Link>
 
-      <img src={employee.picture.large} alt={employee.name.first} />
+        <div className="employee-card">
+          <img src={employee.picture.large} alt={employee.name.first} />
 
-      <h1>
-        {employee.name.first} {employee.name.last}
-      </h1>
+          <h1>
+            {employee.name.first} {employee.name.last}
+          </h1>
 
-      <p>{employee.email}</p>
-      <p>{employee.phone}</p>
-
-      <p>{employee.location.city}</p>
-      <p>{employee.location.country}</p>
+          <p>
+            <strong>E-post:</strong> {employee.email}
+          </p>
+          <p>
+            <strong>Telefon:</strong> {employee.phone}
+          </p>
+          <p>
+            <strong>Stad:</strong> {employee.location.city}
+          </p>
+          <p>
+            <strong>Land:</strong> {employee.location.country}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
