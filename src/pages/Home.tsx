@@ -10,9 +10,22 @@ function Home() {
       .then((data) => setEmployees(data.results));
   }, []);
 
-  console.log(employees);
+  return (
+    <div>
+      <h1>Alla anställda</h1>
 
-  return <h1>Alla anställda</h1>;
+      {employees.map((employee) => (
+        <div key={employee.email}>
+          <img src={employee.picture.large} alt={employee.name.first} />
+          <h2>
+            {employee.name.first} {employee.name.last}
+          </h2>
+          <p>{employee.email}</p>
+          <p>{employee.phone}</p>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default Home;
