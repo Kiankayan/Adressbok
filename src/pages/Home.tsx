@@ -7,12 +7,28 @@ function Home() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState("first-asc");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("https://randomuser.me/api/?results=10&seed=adressbok")
-      .then((response) => response.json())
-      .then((data) => setEmployees(data.results));
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Kunde inte hämta anställda");
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        setEmployees(data.results);
+      })
+      .catch(() => {
+        setError("Kunde inte hämta anställda. Försök igen senare.");
+      });
   }, []);
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   const filteredEmployees = employees.filter(
     (employee) =>
