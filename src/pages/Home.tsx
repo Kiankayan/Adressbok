@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, Mail, Phone, ArrowUpDown } from "lucide-react";
+import { Mail, Phone, Search, SlidersHorizontal, Users } from "lucide-react";
 import type { Employee } from "../types/Employee";
 import "./Home.css";
 
@@ -32,11 +32,11 @@ function Home() {
   }, []);
 
   if (loading) {
-    return <p>Laddar anställda...</p>;
+    return <p className="status-message">Laddar anställda...</p>;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <p className="status-message error-message">{error}</p>;
   }
 
   const filteredEmployees = employees.filter(
@@ -63,68 +63,89 @@ function Home() {
 
   return (
     <div className="home">
-      <h1 className="home-title">Adressbok</h1>
+      <header className="home-header">
+        <img
+          src="/images/home-header.png"
+          alt="Adressbok"
+          className="header-image"
+        />
+      </header>
 
-      <div className="controls">
-        <div className="search-box">
-          <Search size={20} />
+      <main className="home-content">
+        <div className="controls">
+          <div className="search-wrapper">
+            <Search className="search-icon" size={24} />
 
-          <input
-            type="text"
-            placeholder="Sök efter anställd..."
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
+            <input
+              type="text"
+              placeholder="Sök efter anställd..."
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
+          </div>
+
+          <div className="sort-wrapper">
+            <SlidersHorizontal size={22} />
+
+            <select
+              value={sortOrder}
+              onChange={(event) => setSortOrder(event.target.value)}
+            >
+              <option value="first-asc">Förnamn A–Ö</option>
+              <option value="first-desc">Förnamn Ö–A</option>
+              <option value="last-asc">Efternamn A–Ö</option>
+              <option value="last-desc">Efternamn Ö–A</option>
+            </select>
+          </div>
         </div>
 
-        <div className="sort-box">
-          <ArrowUpDown size={20} />
-
-          <select
-            value={sortOrder}
-            onChange={(event) => setSortOrder(event.target.value)}
-          >
-            <option value="first-asc">Förnamn A–Ö</option>
-            <option value="first-desc">Förnamn Ö–A</option>
-            <option value="last-asc">Efternamn A–Ö</option>
-            <option value="last-desc">Efternamn Ö–A</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="employee-list">
-        {sortedEmployees.length === 0 ? (
-          <p className="no-results">
-            🔍 Inga anställda hittades.
-            <br />
-            Försök med ett annat namn.
-          </p>
-        ) : (
-          sortedEmployees.map((employee) => (
+        <div className="employee-list">
+          {sortedEmployees.map((employee) => (
             <Link
               to={`/employee/${employee.login.uuid}`}
               key={employee.login.uuid}
-              className="employee-card"
+              className="home-employee-card"
             >
-              <img src={employee.picture.large} alt={employee.name.first} />
+              <img
+                src={employee.picture.large}
+                alt={`${employee.name.first} ${employee.name.last}`}
+              />
 
               <h2>
                 {employee.name.first} {employee.name.last}
               </h2>
 
-              <p>
-                <Mail size={18} />
-                {employee.email}
-              </p>
+              <div className="contact-info">
+                <p>
+                  <Mail size={17} />
+                  <span>{employee.email}</span>
+                </p>
 
-              <p>
-                <Phone size={18} />
-                {employee.phone}
-              </p>
+                <p>
+                  <Phone size={17} />
+                  <span>{employee.phone}</span>
+                </p>
+              </div>
             </Link>
-          ))
+          ))}
+        </div>
+
+        {sortedEmployees.length === 0 && (
+          <p className="no-results">Ingen anställd hittades.</p>
         )}
-      </div>
+      </main>
+
+      <footer className="home-footer">
+        <div className="footer-icon">
+          <Users size={20} />
+        </div>
+
+        <span>{employees.length} anställda i adressboken</span>
+      </footer>
+
+      <div className="wave wave-light"></div>
+      <div className="wave wave-medium"></div>
+      <div className="wave wave-dark"></div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { Employee } from "../types/Employee";
+import { ArrowLeft, Mail, Phone, MapPin, Globe, Home } from "lucide-react";
 import "./EmployeeDetails.css";
 
 function EmployeeDetails() {
@@ -20,36 +21,67 @@ function EmployeeDetails() {
   }, [id]);
 
   if (!employee) {
-    return <p>Laddar...</p>;
+    return <p className="details-loading">Laddar...</p>;
   }
 
   return (
     <div className="employee-page">
-      <div className="employee-container">
-        <Link to="/" className="back-link">
-          ← Tillbaka
-        </Link>
+      <header className="employee-header">
+        <div className="employee-header-content">
+          <Link to="/" className="back-link">
+            <ArrowLeft size={22} />
+            <span>Tillbaka</span>
+          </Link>
 
+          <Link to="/" className="home-link" aria-label="Gå till startsidan">
+            <Home size={24} />
+          </Link>
+        </div>
+      </header>
+
+      <main className="employee-main">
         <div className="employee-card">
-          <img src={employee.picture.large} alt={employee.name.first} />
+          <img
+            src={employee.picture.large}
+            alt={`${employee.name.first} ${employee.name.last}`}
+          />
 
           <h1>
             {employee.name.first} {employee.name.last}
           </h1>
 
-          <p>
-            <strong>E-post:</strong> {employee.email}
-          </p>
-          <p>
-            <strong>Telefon:</strong> {employee.phone}
-          </p>
-          <p>
-            <strong>Stad:</strong> {employee.location.city}
-          </p>
-          <p>
-            <strong>Land:</strong> {employee.location.country}
-          </p>
+          <div className="title-line"></div>
+
+          <div className="employee-details">
+            <p>
+              <Mail size={25} />
+              <strong>E-post:</strong>
+              <span>{employee.email}</span>
+            </p>
+
+            <p>
+              <Phone size={25} />
+              <strong>Telefon:</strong>
+              <span>{employee.phone}</span>
+            </p>
+
+            <p>
+              <MapPin size={25} />
+              <strong>Stad:</strong>
+              <span>{employee.location.city}</span>
+            </p>
+
+            <p>
+              <Globe size={25} />
+              <strong>Land:</strong>
+              <span>{employee.location.country}</span>
+            </p>
+          </div>
         </div>
+      </main>
+
+      <div className="detail-ocean">
+        <img src="/images/detail-ocean.png" alt="" />
       </div>
     </div>
   );
