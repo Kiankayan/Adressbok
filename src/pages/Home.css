@@ -282,6 +282,7 @@
 
   .sort-wrapper {
     width: 100%;
+    box-sizing: border-box;
   }
 
   .employee-list {
