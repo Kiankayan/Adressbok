@@ -39,11 +39,17 @@ function Home() {
     return <p className="status-message error-message">{error}</p>;
   }
 
-  const filteredEmployees = employees.filter(
-    (employee) =>
-      employee.name.first.toLowerCase().startsWith(search.toLowerCase()) ||
-      employee.name.last.toLowerCase().startsWith(search.toLowerCase()),
-  );
+  const filteredEmployees = employees.filter((employee) => {
+    const firstName = employee.name.first.toLowerCase();
+    const lastName = employee.name.last.toLowerCase();
+    const fullName = `${firstName} ${lastName}`;
+
+    return (
+      firstName.startsWith(search.trim().toLowerCase()) ||
+      lastName.startsWith(search.trim().toLowerCase()) ||
+      fullName.startsWith(search.trim().toLowerCase())
+    );
+  });
 
   const sortedEmployees = [...filteredEmployees].sort((a, b) => {
     if (sortOrder === "first-asc") {
